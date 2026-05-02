@@ -1,0 +1,6 @@
+<expr> ::= ('-')? <term> (<TK_ADD> <term>)*
+<term> ::= <factor> (<TK_MUL> <factor>)*
+<factor> ::= <number> | '(' <expr> ')'
+
+<TK_ADD> ::= '+' | '-'
+<TK_MUL> ::= '*' | '/'

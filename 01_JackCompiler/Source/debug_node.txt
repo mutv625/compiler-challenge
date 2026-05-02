@@ -1,0 +1,1352 @@
+﻿Class  {
+   ClassName = Square,
+   ClassVarDecs =  [
+    ClassVarDec  {
+       Kwd = FIELD,
+       Type = int,
+       VarNames =  [
+        x,
+         y
+      ] 
+    },
+     ClassVarDec  {
+       Kwd = FIELD,
+       Type = int,
+       VarNames =  [
+        size
+      ] 
+    }
+  ],
+   SubroutineDecs =  [
+    SubroutineDec  {
+       Kwd = CONSTRUCTOR,
+       ReturnType = Square,
+       SubroutineName = new,
+       Parameters = ParameterList  {
+         Parameters =  [
+          (int,  Ax),
+           (int,  Ay),
+           (int,  Asize)
+        ] 
+      },
+       Body = SubroutineBody  {
+         VarDecs =  [
+          
+        ],
+         Statements =  [
+          Statement  {
+             Kwd = LET,
+             Body = LetStatement  {
+               VarName = x,
+               IndexExpression = ,
+               ValueExpression = Expression  {
+                 FirstTerm = VarNameTerm  {
+                   VarName = Ax 
+                },
+                 RestTerms =  [
+                  
+                ] 
+              } 
+            } 
+          },
+           Statement  {
+             Kwd = LET,
+             Body = LetStatement  {
+               VarName = y,
+               IndexExpression = ,
+               ValueExpression = Expression  {
+                 FirstTerm = VarNameTerm  {
+                   VarName = Ay 
+                },
+                 RestTerms =  [
+                  
+                ] 
+              } 
+            } 
+          },
+           Statement  {
+             Kwd = LET,
+             Body = LetStatement  {
+               VarName = size,
+               IndexExpression = ,
+               ValueExpression = Expression  {
+                 FirstTerm = VarNameTerm  {
+                   VarName = Asize 
+                },
+                 RestTerms =  [
+                  
+                ] 
+              } 
+            } 
+          },
+           Statement  {
+             Kwd = DO,
+             Body = DoStatement  {
+               Call = SubroutineCallTerm  {
+                 ClassOrVarName = ,
+                 SubroutineName = draw,
+                 Arguments =  [
+                  
+                ] 
+              } 
+            } 
+          },
+           Statement  {
+             Kwd = RETURN,
+             Body = ReturnStatement  {
+               ReturnValue = Expression  {
+                 FirstTerm = KeywordConstant  {
+                   Value = THIS 
+                },
+                 RestTerms =  [
+                  
+                ] 
+              } 
+            } 
+          }
+        ] 
+      } 
+    },
+     SubroutineDec  {
+       Kwd = METHOD,
+       ReturnType = void,
+       SubroutineName = dispose,
+       Parameters = ParameterList  {
+         Parameters =  [
+          
+        ] 
+      },
+       Body = SubroutineBody  {
+         VarDecs =  [
+          
+        ],
+         Statements =  [
+          Statement  {
+             Kwd = DO,
+             Body = DoStatement  {
+               Call = SubroutineCallTerm  {
+                 ClassOrVarName = Memory,
+                 SubroutineName = deAlloc,
+                 Arguments =  [
+                  Expression  {
+                     FirstTerm = KeywordConstant  {
+                       Value = THIS 
+                    },
+                     RestTerms =  [
+                      
+                    ] 
+                  }
+                ] 
+              } 
+            } 
+          },
+           Statement  {
+             Kwd = RETURN,
+             Body = ReturnStatement  {
+               ReturnValue =  
+            } 
+          }
+        ] 
+      } 
+    },
+     SubroutineDec  {
+       Kwd = METHOD,
+       ReturnType = void,
+       SubroutineName = draw,
+       Parameters = ParameterList  {
+         Parameters =  [
+          
+        ] 
+      },
+       Body = SubroutineBody  {
+         VarDecs =  [
+          
+        ],
+         Statements =  [
+          Statement  {
+             Kwd = DO,
+             Body = DoStatement  {
+               Call = SubroutineCallTerm  {
+                 ClassOrVarName = Screen,
+                 SubroutineName = setColor,
+                 Arguments =  [
+                  Expression  {
+                     FirstTerm = KeywordConstant  {
+                       Value = TRUE 
+                    },
+                     RestTerms =  [
+                      
+                    ] 
+                  }
+                ] 
+              } 
+            } 
+          },
+           Statement  {
+             Kwd = DO,
+             Body = DoStatement  {
+               Call = SubroutineCallTerm  {
+                 ClassOrVarName = Screen,
+                 SubroutineName = drawRectangle,
+                 Arguments =  [
+                  Expression  {
+                     FirstTerm = VarNameTerm  {
+                       VarName = x 
+                    },
+                     RestTerms =  [
+                      
+                    ] 
+                  },
+                   Expression  {
+                     FirstTerm = VarNameTerm  {
+                       VarName = y 
+                    },
+                     RestTerms =  [
+                      
+                    ] 
+                  },
+                   Expression  {
+                     FirstTerm = VarNameTerm  {
+                       VarName = x 
+                    },
+                     RestTerms =  [
+                      (PLUS,  VarNameTerm  {
+                         VarName = size 
+                      })
+                    ] 
+                  },
+                   Expression  {
+                     FirstTerm = VarNameTerm  {
+                       VarName = y 
+                    },
+                     RestTerms =  [
+                      (PLUS,  VarNameTerm  {
+                         VarName = size 
+                      })
+                    ] 
+                  }
+                ] 
+              } 
+            } 
+          },
+           Statement  {
+             Kwd = RETURN,
+             Body = ReturnStatement  {
+               ReturnValue =  
+            } 
+          }
+        ] 
+      } 
+    },
+     SubroutineDec  {
+       Kwd = METHOD,
+       ReturnType = void,
+       SubroutineName = erase,
+       Parameters = ParameterList  {
+         Parameters =  [
+          
+        ] 
+      },
+       Body = SubroutineBody  {
+         VarDecs =  [
+          
+        ],
+         Statements =  [
+          Statement  {
+             Kwd = DO,
+             Body = DoStatement  {
+               Call = SubroutineCallTerm  {
+                 ClassOrVarName = Screen,
+                 SubroutineName = setColor,
+                 Arguments =  [
+                  Expression  {
+                     FirstTerm = KeywordConstant  {
+                       Value = FALSE 
+                    },
+                     RestTerms =  [
+                      
+                    ] 
+                  }
+                ] 
+              } 
+            } 
+          },
+           Statement  {
+             Kwd = DO,
+             Body = DoStatement  {
+               Call = SubroutineCallTerm  {
+                 ClassOrVarName = Screen,
+                 SubroutineName = drawRectangle,
+                 Arguments =  [
+                  Expression  {
+                     FirstTerm = VarNameTerm  {
+                       VarName = x 
+                    },
+                     RestTerms =  [
+                      
+                    ] 
+                  },
+                   Expression  {
+                     FirstTerm = VarNameTerm  {
+                       VarName = y 
+                    },
+                     RestTerms =  [
+                      
+                    ] 
+                  },
+                   Expression  {
+                     FirstTerm = VarNameTerm  {
+                       VarName = x 
+                    },
+                     RestTerms =  [
+                      (PLUS,  VarNameTerm  {
+                         VarName = size 
+                      })
+                    ] 
+                  },
+                   Expression  {
+                     FirstTerm = VarNameTerm  {
+                       VarName = y 
+                    },
+                     RestTerms =  [
+                      (PLUS,  VarNameTerm  {
+                         VarName = size 
+                      })
+                    ] 
+                  }
+                ] 
+              } 
+            } 
+          },
+           Statement  {
+             Kwd = RETURN,
+             Body = ReturnStatement  {
+               ReturnValue =  
+            } 
+          }
+        ] 
+      } 
+    },
+     SubroutineDec  {
+       Kwd = METHOD,
+       ReturnType = void,
+       SubroutineName = incSize,
+       Parameters = ParameterList  {
+         Parameters =  [
+          
+        ] 
+      },
+       Body = SubroutineBody  {
+         VarDecs =  [
+          
+        ],
+         Statements =  [
+          Statement  {
+             Kwd = IF,
+             Body = IfStatement  {
+               Condition = Expression  {
+                 FirstTerm = ParenthesizedTerm  {
+                   InnerExpression = Expression  {
+                     FirstTerm = ParenthesizedTerm  {
+                       InnerExpression = Expression  {
+                         FirstTerm = VarNameTerm  {
+                           VarName = y 
+                        },
+                         RestTerms =  [
+                          (PLUS,  VarNameTerm  {
+                             VarName = size 
+                          })
+                        ] 
+                      } 
+                    },
+                     RestTerms =  [
+                      (LT,  IntegerConstant  {
+                         Value = 254 
+                      })
+                    ] 
+                  } 
+                },
+                 RestTerms =  [
+                  (AMPERSAND,  ParenthesizedTerm  {
+                     InnerExpression = Expression  {
+                       FirstTerm = ParenthesizedTerm  {
+                         InnerExpression = Expression  {
+                           FirstTerm = VarNameTerm  {
+                             VarName = x 
+                          },  RestTerms =  [
+                            (PLUS,  VarNameTerm  {
+                               VarName = size 
+                            })
+                          ] 
+                        } 
+                      },  RestTerms =  [
+                        (LT,  IntegerConstant  {
+                           Value = 510 
+                        })
+                      ] 
+                    } 
+                  })
+                ] 
+              },
+               ThenStatements =  [
+                Statement  {
+                   Kwd = DO,
+                   Body = DoStatement  {
+                     Call = SubroutineCallTerm  {
+                       ClassOrVarName = ,
+                       SubroutineName = erase,
+                       Arguments =  [
+                        
+                      ] 
+                    } 
+                  } 
+                },
+                 Statement  {
+                   Kwd = LET,
+                   Body = LetStatement  {
+                     VarName = size,
+                     IndexExpression = ,
+                     ValueExpression = Expression  {
+                       FirstTerm = VarNameTerm  {
+                         VarName = size 
+                      },
+                       RestTerms =  [
+                        (PLUS,  IntegerConstant  {
+                           Value = 2 
+                        })
+                      ] 
+                    } 
+                  } 
+                },
+                 Statement  {
+                   Kwd = DO,
+                   Body = DoStatement  {
+                     Call = SubroutineCallTerm  {
+                       ClassOrVarName = ,
+                       SubroutineName = draw,
+                       Arguments =  [
+                        
+                      ] 
+                    } 
+                  } 
+                }
+              ],
+               ElseStatements =  
+            } 
+          },
+           Statement  {
+             Kwd = RETURN,
+             Body = ReturnStatement  {
+               ReturnValue =  
+            } 
+          }
+        ] 
+      } 
+    },
+     SubroutineDec  {
+       Kwd = METHOD,
+       ReturnType = void,
+       SubroutineName = decSize,
+       Parameters = ParameterList  {
+         Parameters =  [
+          
+        ] 
+      },
+       Body = SubroutineBody  {
+         VarDecs =  [
+          
+        ],
+         Statements =  [
+          Statement  {
+             Kwd = IF,
+             Body = IfStatement  {
+               Condition = Expression  {
+                 FirstTerm = VarNameTerm  {
+                   VarName = size 
+                },
+                 RestTerms =  [
+                  (GT,  IntegerConstant  {
+                     Value = 2 
+                  })
+                ] 
+              },
+               ThenStatements =  [
+                Statement  {
+                   Kwd = DO,
+                   Body = DoStatement  {
+                     Call = SubroutineCallTerm  {
+                       ClassOrVarName = ,
+                       SubroutineName = erase,
+                       Arguments =  [
+                        
+                      ] 
+                    } 
+                  } 
+                },
+                 Statement  {
+                   Kwd = LET,
+                   Body = LetStatement  {
+                     VarName = size,
+                     IndexExpression = ,
+                     ValueExpression = Expression  {
+                       FirstTerm = VarNameTerm  {
+                         VarName = size 
+                      },
+                       RestTerms =  [
+                        (MINUS,  IntegerConstant  {
+                           Value = 2 
+                        })
+                      ] 
+                    } 
+                  } 
+                },
+                 Statement  {
+                   Kwd = DO,
+                   Body = DoStatement  {
+                     Call = SubroutineCallTerm  {
+                       ClassOrVarName = ,
+                       SubroutineName = draw,
+                       Arguments =  [
+                        
+                      ] 
+                    } 
+                  } 
+                }
+              ],
+               ElseStatements =  
+            } 
+          },
+           Statement  {
+             Kwd = RETURN,
+             Body = ReturnStatement  {
+               ReturnValue =  
+            } 
+          }
+        ] 
+      } 
+    },
+     SubroutineDec  {
+       Kwd = METHOD,
+       ReturnType = void,
+       SubroutineName = moveUp,
+       Parameters = ParameterList  {
+         Parameters =  [
+          
+        ] 
+      },
+       Body = SubroutineBody  {
+         VarDecs =  [
+          
+        ],
+         Statements =  [
+          Statement  {
+             Kwd = IF,
+             Body = IfStatement  {
+               Condition = Expression  {
+                 FirstTerm = VarNameTerm  {
+                   VarName = y 
+                },
+                 RestTerms =  [
+                  (GT,  IntegerConstant  {
+                     Value = 1 
+                  })
+                ] 
+              },
+               ThenStatements =  [
+                Statement  {
+                   Kwd = DO,
+                   Body = DoStatement  {
+                     Call = SubroutineCallTerm  {
+                       ClassOrVarName = Screen,
+                       SubroutineName = setColor,
+                       Arguments =  [
+                        Expression  {
+                           FirstTerm = KeywordConstant  {
+                             Value = FALSE 
+                          },
+                           RestTerms =  [
+                            
+                          ] 
+                        }
+                      ] 
+                    } 
+                  } 
+                },
+                 Statement  {
+                   Kwd = DO,
+                   Body = DoStatement  {
+                     Call = SubroutineCallTerm  {
+                       ClassOrVarName = Screen,
+                       SubroutineName = drawRectangle,
+                       Arguments =  [
+                        Expression  {
+                           FirstTerm = VarNameTerm  {
+                             VarName = x 
+                          },
+                           RestTerms =  [
+                            
+                          ] 
+                        },
+                         Expression  {
+                           FirstTerm = ParenthesizedTerm  {
+                             InnerExpression = Expression  {
+                               FirstTerm = VarNameTerm  {
+                                 VarName = y 
+                              },
+                               RestTerms =  [
+                                (PLUS,  VarNameTerm  {
+                                   VarName = size 
+                                })
+                              ] 
+                            } 
+                          },
+                           RestTerms =  [
+                            (MINUS,  IntegerConstant  {
+                               Value = 1 
+                            })
+                          ] 
+                        },
+                         Expression  {
+                           FirstTerm = VarNameTerm  {
+                             VarName = x 
+                          },
+                           RestTerms =  [
+                            (PLUS,  VarNameTerm  {
+                               VarName = size 
+                            })
+                          ] 
+                        },
+                         Expression  {
+                           FirstTerm = VarNameTerm  {
+                             VarName = y 
+                          },
+                           RestTerms =  [
+                            (PLUS,  VarNameTerm  {
+                               VarName = size 
+                            })
+                          ] 
+                        }
+                      ] 
+                    } 
+                  } 
+                },
+                 Statement  {
+                   Kwd = LET,
+                   Body = LetStatement  {
+                     VarName = y,
+                     IndexExpression = ,
+                     ValueExpression = Expression  {
+                       FirstTerm = VarNameTerm  {
+                         VarName = y 
+                      },
+                       RestTerms =  [
+                        (MINUS,  IntegerConstant  {
+                           Value = 2 
+                        })
+                      ] 
+                    } 
+                  } 
+                },
+                 Statement  {
+                   Kwd = DO,
+                   Body = DoStatement  {
+                     Call = SubroutineCallTerm  {
+                       ClassOrVarName = Screen,
+                       SubroutineName = setColor,
+                       Arguments =  [
+                        Expression  {
+                           FirstTerm = KeywordConstant  {
+                             Value = TRUE 
+                          },
+                           RestTerms =  [
+                            
+                          ] 
+                        }
+                      ] 
+                    } 
+                  } 
+                },
+                 Statement  {
+                   Kwd = DO,
+                   Body = DoStatement  {
+                     Call = SubroutineCallTerm  {
+                       ClassOrVarName = Screen,
+                       SubroutineName = drawRectangle,
+                       Arguments =  [
+                        Expression  {
+                           FirstTerm = VarNameTerm  {
+                             VarName = x 
+                          },
+                           RestTerms =  [
+                            
+                          ] 
+                        },
+                         Expression  {
+                           FirstTerm = VarNameTerm  {
+                             VarName = y 
+                          },
+                           RestTerms =  [
+                            
+                          ] 
+                        },
+                         Expression  {
+                           FirstTerm = VarNameTerm  {
+                             VarName = x 
+                          },
+                           RestTerms =  [
+                            (PLUS,  VarNameTerm  {
+                               VarName = size 
+                            })
+                          ] 
+                        },
+                         Expression  {
+                           FirstTerm = VarNameTerm  {
+                             VarName = y 
+                          },
+                           RestTerms =  [
+                            (PLUS,  IntegerConstant  {
+                               Value = 1 
+                            })
+                          ] 
+                        }
+                      ] 
+                    } 
+                  } 
+                }
+              ],
+               ElseStatements =  
+            } 
+          },
+           Statement  {
+             Kwd = RETURN,
+             Body = ReturnStatement  {
+               ReturnValue =  
+            } 
+          }
+        ] 
+      } 
+    },
+     SubroutineDec  {
+       Kwd = METHOD,
+       ReturnType = void,
+       SubroutineName = moveDown,
+       Parameters = ParameterList  {
+         Parameters =  [
+          
+        ] 
+      },
+       Body = SubroutineBody  {
+         VarDecs =  [
+          
+        ],
+         Statements =  [
+          Statement  {
+             Kwd = IF,
+             Body = IfStatement  {
+               Condition = Expression  {
+                 FirstTerm = ParenthesizedTerm  {
+                   InnerExpression = Expression  {
+                     FirstTerm = VarNameTerm  {
+                       VarName = y 
+                    },
+                     RestTerms =  [
+                      (PLUS,  VarNameTerm  {
+                         VarName = size 
+                      })
+                    ] 
+                  } 
+                },
+                 RestTerms =  [
+                  (LT,  IntegerConstant  {
+                     Value = 254 
+                  })
+                ] 
+              },
+               ThenStatements =  [
+                Statement  {
+                   Kwd = DO,
+                   Body = DoStatement  {
+                     Call = SubroutineCallTerm  {
+                       ClassOrVarName = Screen,
+                       SubroutineName = setColor,
+                       Arguments =  [
+                        Expression  {
+                           FirstTerm = KeywordConstant  {
+                             Value = FALSE 
+                          },
+                           RestTerms =  [
+                            
+                          ] 
+                        }
+                      ] 
+                    } 
+                  } 
+                },
+                 Statement  {
+                   Kwd = DO,
+                   Body = DoStatement  {
+                     Call = SubroutineCallTerm  {
+                       ClassOrVarName = Screen,
+                       SubroutineName = drawRectangle,
+                       Arguments =  [
+                        Expression  {
+                           FirstTerm = VarNameTerm  {
+                             VarName = x 
+                          },
+                           RestTerms =  [
+                            
+                          ] 
+                        },
+                         Expression  {
+                           FirstTerm = VarNameTerm  {
+                             VarName = y 
+                          },
+                           RestTerms =  [
+                            
+                          ] 
+                        },
+                         Expression  {
+                           FirstTerm = VarNameTerm  {
+                             VarName = x 
+                          },
+                           RestTerms =  [
+                            (PLUS,  VarNameTerm  {
+                               VarName = size 
+                            })
+                          ] 
+                        },
+                         Expression  {
+                           FirstTerm = VarNameTerm  {
+                             VarName = y 
+                          },
+                           RestTerms =  [
+                            (PLUS,  IntegerConstant  {
+                               Value = 1 
+                            })
+                          ] 
+                        }
+                      ] 
+                    } 
+                  } 
+                },
+                 Statement  {
+                   Kwd = LET,
+                   Body = LetStatement  {
+                     VarName = y,
+                     IndexExpression = ,
+                     ValueExpression = Expression  {
+                       FirstTerm = VarNameTerm  {
+                         VarName = y 
+                      },
+                       RestTerms =  [
+                        (PLUS,  IntegerConstant  {
+                           Value = 2 
+                        })
+                      ] 
+                    } 
+                  } 
+                },
+                 Statement  {
+                   Kwd = DO,
+                   Body = DoStatement  {
+                     Call = SubroutineCallTerm  {
+                       ClassOrVarName = Screen,
+                       SubroutineName = setColor,
+                       Arguments =  [
+                        Expression  {
+                           FirstTerm = KeywordConstant  {
+                             Value = TRUE 
+                          },
+                           RestTerms =  [
+                            
+                          ] 
+                        }
+                      ] 
+                    } 
+                  } 
+                },
+                 Statement  {
+                   Kwd = DO,
+                   Body = DoStatement  {
+                     Call = SubroutineCallTerm  {
+                       ClassOrVarName = Screen,
+                       SubroutineName = drawRectangle,
+                       Arguments =  [
+                        Expression  {
+                           FirstTerm = VarNameTerm  {
+                             VarName = x 
+                          },
+                           RestTerms =  [
+                            
+                          ] 
+                        },
+                         Expression  {
+                           FirstTerm = ParenthesizedTerm  {
+                             InnerExpression = Expression  {
+                               FirstTerm = VarNameTerm  {
+                                 VarName = y 
+                              },
+                               RestTerms =  [
+                                (PLUS,  VarNameTerm  {
+                                   VarName = size 
+                                })
+                              ] 
+                            } 
+                          },
+                           RestTerms =  [
+                            (MINUS,  IntegerConstant  {
+                               Value = 1 
+                            })
+                          ] 
+                        },
+                         Expression  {
+                           FirstTerm = VarNameTerm  {
+                             VarName = x 
+                          },
+                           RestTerms =  [
+                            (PLUS,  VarNameTerm  {
+                               VarName = size 
+                            })
+                          ] 
+                        },
+                         Expression  {
+                           FirstTerm = VarNameTerm  {
+                             VarName = y 
+                          },
+                           RestTerms =  [
+                            (PLUS,  VarNameTerm  {
+                               VarName = size 
+                            })
+                          ] 
+                        }
+                      ] 
+                    } 
+                  } 
+                }
+              ],
+               ElseStatements =  
+            } 
+          },
+           Statement  {
+             Kwd = RETURN,
+             Body = ReturnStatement  {
+               ReturnValue =  
+            } 
+          }
+        ] 
+      } 
+    },
+     SubroutineDec  {
+       Kwd = METHOD,
+       ReturnType = void,
+       SubroutineName = moveLeft,
+       Parameters = ParameterList  {
+         Parameters =  [
+          
+        ] 
+      },
+       Body = SubroutineBody  {
+         VarDecs =  [
+          
+        ],
+         Statements =  [
+          Statement  {
+             Kwd = IF,
+             Body = IfStatement  {
+               Condition = Expression  {
+                 FirstTerm = VarNameTerm  {
+                   VarName = x 
+                },
+                 RestTerms =  [
+                  (GT,  IntegerConstant  {
+                     Value = 1 
+                  })
+                ] 
+              },
+               ThenStatements =  [
+                Statement  {
+                   Kwd = DO,
+                   Body = DoStatement  {
+                     Call = SubroutineCallTerm  {
+                       ClassOrVarName = Screen,
+                       SubroutineName = setColor,
+                       Arguments =  [
+                        Expression  {
+                           FirstTerm = KeywordConstant  {
+                             Value = FALSE 
+                          },
+                           RestTerms =  [
+                            
+                          ] 
+                        }
+                      ] 
+                    } 
+                  } 
+                },
+                 Statement  {
+                   Kwd = DO,
+                   Body = DoStatement  {
+                     Call = SubroutineCallTerm  {
+                       ClassOrVarName = Screen,
+                       SubroutineName = drawRectangle,
+                       Arguments =  [
+                        Expression  {
+                           FirstTerm = ParenthesizedTerm  {
+                             InnerExpression = Expression  {
+                               FirstTerm = VarNameTerm  {
+                                 VarName = x 
+                              },
+                               RestTerms =  [
+                                (PLUS,  VarNameTerm  {
+                                   VarName = size 
+                                })
+                              ] 
+                            } 
+                          },
+                           RestTerms =  [
+                            (MINUS,  IntegerConstant  {
+                               Value = 1 
+                            })
+                          ] 
+                        },
+                         Expression  {
+                           FirstTerm = VarNameTerm  {
+                             VarName = y 
+                          },
+                           RestTerms =  [
+                            
+                          ] 
+                        },
+                         Expression  {
+                           FirstTerm = VarNameTerm  {
+                             VarName = x 
+                          },
+                           RestTerms =  [
+                            (PLUS,  VarNameTerm  {
+                               VarName = size 
+                            })
+                          ] 
+                        },
+                         Expression  {
+                           FirstTerm = VarNameTerm  {
+                             VarName = y 
+                          },
+                           RestTerms =  [
+                            (PLUS,  VarNameTerm  {
+                               VarName = size 
+                            })
+                          ] 
+                        }
+                      ] 
+                    } 
+                  } 
+                },
+                 Statement  {
+                   Kwd = LET,
+                   Body = LetStatement  {
+                     VarName = x,
+                     IndexExpression = ,
+                     ValueExpression = Expression  {
+                       FirstTerm = VarNameTerm  {
+                         VarName = x 
+                      },
+                       RestTerms =  [
+                        (MINUS,  IntegerConstant  {
+                           Value = 2 
+                        })
+                      ] 
+                    } 
+                  } 
+                },
+                 Statement  {
+                   Kwd = DO,
+                   Body = DoStatement  {
+                     Call = SubroutineCallTerm  {
+                       ClassOrVarName = Screen,
+                       SubroutineName = setColor,
+                       Arguments =  [
+                        Expression  {
+                           FirstTerm = KeywordConstant  {
+                             Value = TRUE 
+                          },
+                           RestTerms =  [
+                            
+                          ] 
+                        }
+                      ] 
+                    } 
+                  } 
+                },
+                 Statement  {
+                   Kwd = DO,
+                   Body = DoStatement  {
+                     Call = SubroutineCallTerm  {
+                       ClassOrVarName = Screen,
+                       SubroutineName = drawRectangle,
+                       Arguments =  [
+                        Expression  {
+                           FirstTerm = VarNameTerm  {
+                             VarName = x 
+                          },
+                           RestTerms =  [
+                            
+                          ] 
+                        },
+                         Expression  {
+                           FirstTerm = VarNameTerm  {
+                             VarName = y 
+                          },
+                           RestTerms =  [
+                            
+                          ] 
+                        },
+                         Expression  {
+                           FirstTerm = VarNameTerm  {
+                             VarName = x 
+                          },
+                           RestTerms =  [
+                            (PLUS,  IntegerConstant  {
+                               Value = 1 
+                            })
+                          ] 
+                        },
+                         Expression  {
+                           FirstTerm = VarNameTerm  {
+                             VarName = y 
+                          },
+                           RestTerms =  [
+                            (PLUS,  VarNameTerm  {
+                               VarName = size 
+                            })
+                          ] 
+                        }
+                      ] 
+                    } 
+                  } 
+                }
+              ],
+               ElseStatements =  
+            } 
+          },
+           Statement  {
+             Kwd = RETURN,
+             Body = ReturnStatement  {
+               ReturnValue =  
+            } 
+          }
+        ] 
+      } 
+    },
+     SubroutineDec  {
+       Kwd = METHOD,
+       ReturnType = void,
+       SubroutineName = moveRight,
+       Parameters = ParameterList  {
+         Parameters =  [
+          
+        ] 
+      },
+       Body = SubroutineBody  {
+         VarDecs =  [
+          
+        ],
+         Statements =  [
+          Statement  {
+             Kwd = IF,
+             Body = IfStatement  {
+               Condition = Expression  {
+                 FirstTerm = ParenthesizedTerm  {
+                   InnerExpression = Expression  {
+                     FirstTerm = VarNameTerm  {
+                       VarName = x 
+                    },
+                     RestTerms =  [
+                      (PLUS,  VarNameTerm  {
+                         VarName = size 
+                      })
+                    ] 
+                  } 
+                },
+                 RestTerms =  [
+                  (LT,  IntegerConstant  {
+                     Value = 510 
+                  })
+                ] 
+              },
+               ThenStatements =  [
+                Statement  {
+                   Kwd = DO,
+                   Body = DoStatement  {
+                     Call = SubroutineCallTerm  {
+                       ClassOrVarName = Screen,
+                       SubroutineName = setColor,
+                       Arguments =  [
+                        Expression  {
+                           FirstTerm = KeywordConstant  {
+                             Value = FALSE 
+                          },
+                           RestTerms =  [
+                            
+                          ] 
+                        }
+                      ] 
+                    } 
+                  } 
+                },
+                 Statement  {
+                   Kwd = DO,
+                   Body = DoStatement  {
+                     Call = SubroutineCallTerm  {
+                       ClassOrVarName = Screen,
+                       SubroutineName = drawRectangle,
+                       Arguments =  [
+                        Expression  {
+                           FirstTerm = VarNameTerm  {
+                             VarName = x 
+                          },
+                           RestTerms =  [
+                            
+                          ] 
+                        },
+                         Expression  {
+                           FirstTerm = VarNameTerm  {
+                             VarName = y 
+                          },
+                           RestTerms =  [
+                            
+                          ] 
+                        },
+                         Expression  {
+                           FirstTerm = VarNameTerm  {
+                             VarName = x 
+                          },
+                           RestTerms =  [
+                            (PLUS,  IntegerConstant  {
+                               Value = 1 
+                            })
+                          ] 
+                        },
+                         Expression  {
+                           FirstTerm = VarNameTerm  {
+                             VarName = y 
+                          },
+                           RestTerms =  [
+                            (PLUS,  VarNameTerm  {
+                               VarName = size 
+                            })
+                          ] 
+                        }
+                      ] 
+                    } 
+                  } 
+                },
+                 Statement  {
+                   Kwd = LET,
+                   Body = LetStatement  {
+                     VarName = x,
+                     IndexExpression = ,
+                     ValueExpression = Expression  {
+                       FirstTerm = VarNameTerm  {
+                         VarName = x 
+                      },
+                       RestTerms =  [
+                        (PLUS,  IntegerConstant  {
+                           Value = 2 
+                        })
+                      ] 
+                    } 
+                  } 
+                },
+                 Statement  {
+                   Kwd = DO,
+                   Body = DoStatement  {
+                     Call = SubroutineCallTerm  {
+                       ClassOrVarName = Screen,
+                       SubroutineName = setColor,
+                       Arguments =  [
+                        Expression  {
+                           FirstTerm = KeywordConstant  {
+                             Value = TRUE 
+                          },
+                           RestTerms =  [
+                            
+                          ] 
+                        }
+                      ] 
+                    } 
+                  } 
+                },
+                 Statement  {
+                   Kwd = DO,
+                   Body = DoStatement  {
+                     Call = SubroutineCallTerm  {
+                       ClassOrVarName = Screen,
+                       SubroutineName = drawRectangle,
+                       Arguments =  [
+                        Expression  {
+                           FirstTerm = ParenthesizedTerm  {
+                             InnerExpression = Expression  {
+                               FirstTerm = VarNameTerm  {
+                                 VarName = x 
+                              },
+                               RestTerms =  [
+                                (PLUS,  VarNameTerm  {
+                                   VarName = size 
+                                })
+                              ] 
+                            } 
+                          },
+                           RestTerms =  [
+                            (MINUS,  IntegerConstant  {
+                               Value = 1 
+                            })
+                          ] 
+                        },
+                         Expression  {
+                           FirstTerm = VarNameTerm  {
+                             VarName = y 
+                          },
+                           RestTerms =  [
+                            
+                          ] 
+                        },
+                         Expression  {
+                           FirstTerm = VarNameTerm  {
+                             VarName = x 
+                          },
+                           RestTerms =  [
+                            (PLUS,  VarNameTerm  {
+                               VarName = size 
+                            })
+                          ] 
+                        },
+                         Expression  {
+                           FirstTerm = VarNameTerm  {
+                             VarName = y 
+                          },
+                           RestTerms =  [
+                            (PLUS,  VarNameTerm  {
+                               VarName = size 
+                            })
+                          ] 
+                        }
+                      ] 
+                    } 
+                  } 
+                }
+              ],
+               ElseStatements =  
+            } 
+          },
+           Statement  {
+             Kwd = RETURN,
+             Body = ReturnStatement  {
+               ReturnValue =  
+            } 
+          }
+        ] 
+      } 
+    }
+  ] 
+}
+
