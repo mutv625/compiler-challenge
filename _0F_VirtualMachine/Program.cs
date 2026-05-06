@@ -225,7 +225,7 @@ class Parser
         // * 1ワード系を先に例外処理
         if (fields.Length == 1)
         {
-            if (fields[0] == "return") // return は例外的にここでは処理しない
+            if (fields[0] == "return")
             {
                 return new Command
                 {
@@ -234,13 +234,15 @@ class Parser
                     arg2 = 0
                 };
             }
-
-            return new Command
+            else
             {
-                commandType = CommandType.C_ARITHMETIC,
-                arg1 = fields[0],
-                arg2 = 0
-            };
+                return new Command
+                {
+                    commandType = CommandType.C_ARITHMETIC,
+                    arg1 = fields[0],
+                    arg2 = 0
+                };
+            }
         }
 
         switch (fields[0])
@@ -720,7 +722,7 @@ class AsmStrService
                 segstr = (5 + value).ToString(); break;
 
             case "static":
-                segstr = $"${fileName}.{value}"; break;
+                segstr = $"_SV${fileName}.{value}"; break;
 
             default:
                 break;
@@ -834,7 +836,7 @@ class AsmStrService
                 segstr = (5 + value).ToString(); break;
 
             case "static":
-                segstr = $"${fileName}.{value}"; break;
+                segstr = $"_SV${fileName}.{value}"; break;
 
             default:
                 break;
@@ -1053,7 +1055,7 @@ class AsmStrService
         @LCL
         M=D
     
-    // goto {func}
+    // goto function {func}
         @_f${func}
         0;JMP
 
@@ -1117,7 +1119,7 @@ class AsmStrService
         @R13
         M=D
     
-    // R14(returnAddr) = M[D(framrTop) - 5]
+    // R14(returnAddr) = M[D(frameTop) - 5]
         // A = D - 5
         @5
         A=D-A
