@@ -355,7 +355,7 @@ public class Compiler
                 if (kc.Value == ConstKwd.TRUE)
                 {
                     sb.AppendLine("push constant 0");
-                    sb.AppendLine("neg");
+                    sb.AppendLine("not");
                 }
                 else if (kc.Value == ConstKwd.FALSE || kc.Value == ConstKwd.NULL)
                 {
@@ -393,7 +393,7 @@ public class Compiler
                 }
                 else if (unaryOpTerm.Op == UnaryOperator.NOT)
                 {
-                    sb.AppendLine("neg");
+                    sb.AppendLine("not");
                 }
                 break;
             case SubroutineCallTerm callTerm:

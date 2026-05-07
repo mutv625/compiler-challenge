@@ -29,7 +29,7 @@ function Main.convert 3
 // Compiled local variable declaration: Main.convert local variable 'loop' of type boolean
 // Compiled let statement: Main.convert let loop = (expression)
 push constant 0
-neg
+not
 // Compiled let statement: Main.convert assign to variable 'loop'
 pop local 2
 // Compiled while statement: Main.convert while (expression) { ... }
@@ -55,7 +55,7 @@ pop local 0
 push local 1
 push constant 16
 gt
-neg
+not
 if-goto IF_TRUE_1
 goto IF_FALSE_1
 // Compiled if true branch:
@@ -67,7 +67,7 @@ push local 0
 and
 push constant 0
 eq
-neg
+not
 if-goto IF_TRUE_2
 goto IF_FALSE_2
 // Compiled if true branch:
