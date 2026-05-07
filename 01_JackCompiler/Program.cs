@@ -39,9 +39,13 @@ class Program
 {
     static void Main(string[] args)
     {
-        Parser parser = new Parser(@"C:\Users\mutv6\Desktop\Creative Programming P\01_JackCompiler\Source\Prog.jack", @"C:\Users\mutv6\Desktop\Creative Programming P\01_JackCompiler\Source");
+        Parser parser = new Parser(@"C:\Users\mutv6\Desktop\Creative Programming P\01_JackCompiler\Source\Main.jack", @"C:\Users\mutv6\Desktop\Creative Programming P\01_JackCompiler\Source");
         Class ast = parser.Compile();
-        AstXmlWriter astXmlWriter = new AstXmlWriter(ast, @"C:\Users\mutv6\Desktop\Creative Programming P\01_JackCompiler\Source\Prog.xml");
+
+        AstXmlWriter astXmlWriter = new AstXmlWriter(ast, @"C:\Users\mutv6\Desktop\Creative Programming P\01_JackCompiler\Source\Main.xml");
         astXmlWriter.Write();
+
+        Compiler compiler = new Compiler(ast, @"C:\Users\mutv6\Desktop\Creative Programming P\01_JackCompiler\Source", "Main.vm");
+        compiler.Compile();
     }
 }

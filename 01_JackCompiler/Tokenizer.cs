@@ -21,15 +21,15 @@ public class Tokenizer
     public TokenType CTokenType { get; private set; }
 
     
-    public Keyword CKeyword { get { if (CTokenType != TokenType.KEYWORD) throw new Exception("Current token is not a keyword."); else return field; } private set; }
+    public Keyword CKeyword { get { if (CTokenType != TokenType.KEYWORD) throw new TokenizeException("Current token is not a keyword."); else return field; } private set; }
 
-    public char CSymbol { get { if (CTokenType != TokenType.SYMBOL) throw new Exception("Current token is not a symbol."); else return field; } private set; }
+    public char CSymbol { get { if (CTokenType != TokenType.SYMBOL) throw new TokenizeException("Current token is not a symbol."); else return field; } private set; }
 
-    public string CIdentifier { get { if (CTokenType != TokenType.IDENTIFIER) throw new Exception("Current token is not an identifier."); else return field; } private set; } = "";
+    public string CIdentifier { get { if (CTokenType != TokenType.IDENTIFIER) throw new TokenizeException("Current token is not an identifier."); else return field; } private set; } = "";
 
-    public int CIntVal { get { if (CTokenType != TokenType.INTEGER_CONSTANT) throw new Exception("Current token is not an integer constant."); else return field; } private set; }
+    public int CIntVal { get { if (CTokenType != TokenType.INTEGER_CONSTANT) throw new TokenizeException("Current token is not an integer constant."); else return field; } private set; }
 
-    public string CStringVal { get { if (CTokenType != TokenType.STRING_CONSTANT) throw new Exception("Current token is not a string constant."); else return field; } private set; } = "";
+    public string CStringVal { get { if (CTokenType != TokenType.STRING_CONSTANT) throw new TokenizeException("Current token is not a string constant."); else return field; } private set; } = "";
 
 
     int pos = 0;
@@ -40,7 +40,7 @@ public class Tokenizer
     {
         if (!HasMoreTokens)
         {
-            throw new Exception("No token left.");
+            throw new TokenizeException("No token left.");
         }
         
         // # 終点判定
@@ -195,4 +195,9 @@ public enum Keyword
     FALSE,
     NULL,
     THIS
+}
+
+public class TokenizeException : Exception
+{
+    public TokenizeException(string message) : base(message) { }
 }

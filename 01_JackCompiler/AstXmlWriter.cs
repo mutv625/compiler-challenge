@@ -1,3 +1,5 @@
+using System.Text;
+
 public class AstXmlWriter
 {
     string _outPath;
@@ -29,13 +31,13 @@ public class AstXmlWriter
 
         xmlBuilder.AppendLine("<symbol> { </symbol>");
 
-        // * classVarDec
+        // * classVarDec*
         foreach (var classVarDec in node.ClassVarDecs)
         {
             xmlBuilder.AppendLine(WriteClassVarDec(classVarDec));
         }
 
-        // * subroutineDec
+        // * subroutineDec*
         foreach (var subroutineDec in node.SubroutineDecs)
         {
             xmlBuilder.AppendLine(WriteSubroutineDec(subroutineDec));
@@ -84,7 +86,7 @@ public class AstXmlWriter
 
         // * parameterList
         xmlBuilder.AppendLine("<symbol> ( </symbol>");
-        xmlBuilder.AppendLine(WriteParameterList(node.Parameters));
+        xmlBuilder.AppendLine(WriteParameterList(node.Params));
         xmlBuilder.AppendLine("<symbol> ) </symbol>");
 
         // * subroutineBody
@@ -102,13 +104,13 @@ public class AstXmlWriter
 
         xmlBuilder.AppendLine("<parameterList>");
 
-        for (int i = 0; i < node.Parameters.Count; i++)
+        for (int i = 0; i < node.Params.Count; i++)
         {
-            var parameter = node.Parameters[i];
+            var parameter = node.Params[i];
             xmlBuilder.AppendLine($"<keyword> {parameter.Type} </keyword>");
             xmlBuilder.AppendLine($"<identifier> {parameter.Name} </identifier>");
 
-            if (i < node.Parameters.Count - 1)
+            if (i < node.Params.Count - 1)
             {
                 xmlBuilder.AppendLine("<symbol> , </symbol>");
             }
@@ -134,7 +136,7 @@ public class AstXmlWriter
         }
 
         // * statements
-        xmlBuilder.AppendLine(WriteStatements(node.Statements));
+        xmlBuilder.AppendLine(WriteStatements(node.Stmts));
 
         xmlBuilder.AppendLine("<symbol> } </symbol>");
         xmlBuilder.AppendLine("</subroutineBody>");
@@ -205,16 +207,16 @@ public class AstXmlWriter
         xmlBuilder.AppendLine("<keyword> let </keyword>");
         xmlBuilder.AppendLine($"<identifier> {node.VarName} </identifier>");
 
-        if (node.IndexExpression != null)
+        if (node.IndexExpr != null)
         {
             xmlBuilder.AppendLine("<symbol> [ </symbol>");
-            xmlBuilder.AppendLine(WriteExpression(node.IndexExpression));
+            xmlBuilder.AppendLine(WriteExpression(node.IndexExpr));
             xmlBuilder.AppendLine("<symbol> ] </symbol>");
         }
 
         xmlBuilder.AppendLine("<symbol> = </symbol>");
 
-        xmlBuilder.AppendLine(WriteExpression(node.ValueExpression));
+        xmlBuilder.AppendLine(WriteExpression(node.ValueExpr));
 
         xmlBuilder.AppendLine("<symbol> ; </symbol>");
         xmlBuilder.AppendLine("</letStatement>");
@@ -234,14 +236,14 @@ public class AstXmlWriter
         xmlBuilder.AppendLine("<symbol> ) </symbol>");
 
         xmlBuilder.AppendLine("<symbol> { </symbol>");
-        xmlBuilder.AppendLine(WriteStatements(node.ThenStatements));
+        xmlBuilder.AppendLine(WriteStatements(node.ThenStmts));
         xmlBuilder.AppendLine("<symbol> } </symbol>");
 
-        if (node.ElseStatements != null)
+        if (node.ElseStmts != null)
         {
             xmlBuilder.AppendLine("<keyword> else </keyword>");
             xmlBuilder.AppendLine("<symbol> { </symbol>");
-            xmlBuilder.AppendLine(WriteStatements(node.ElseStatements));
+            xmlBuilder.AppendLine(WriteStatements(node.ElseStmts));
             xmlBuilder.AppendLine("<symbol> } </symbol>");
         }
 
@@ -262,7 +264,7 @@ public class AstXmlWriter
         xmlBuilder.AppendLine("<symbol> ) </symbol>");
 
         xmlBuilder.AppendLine("<symbol> { </symbol>");
-        xmlBuilder.AppendLine(WriteStatements(node.BodyStatements));
+        xmlBuilder.AppendLine(WriteStatements(node.BodyStmts));
         xmlBuilder.AppendLine("<symbol> } </symbol>");
         xmlBuilder.AppendLine("</whileStatement>");
 
@@ -276,7 +278,7 @@ public class AstXmlWriter
 
         xmlBuilder.AppendLine("<doStatement>");
         xmlBuilder.AppendLine("<keyword> do </keyword>");
-        xmlBuilder.AppendLine(WriteSubroutineCall(node.Call));
+        xmlBuilder.AppendLine(WriteSubroutineCall(node.CallTerm));
         xmlBuilder.AppendLine("<symbol> ; </symbol>");
         xmlBuilder.AppendLine("</doStatement>");
 
@@ -345,12 +347,12 @@ public class AstXmlWriter
             case VarNameIndexTerm varNameIndex:
                 xmlBuilder.AppendLine($"<identifier> {varNameIndex.VarName} </identifier>");
                 xmlBuilder.AppendLine("<symbol> [ </symbol>");
-                xmlBuilder.AppendLine(WriteExpression(varNameIndex.IndexExpression));
+                xmlBuilder.AppendLine(WriteExpression(varNameIndex.IndexExpr));
                 xmlBuilder.AppendLine("<symbol> ] </symbol>");
                 break;
             case ParenthesizedTerm parenTerm:
                 xmlBuilder.AppendLine("<symbol> ( </symbol>");
-                xmlBuilder.AppendLine(WriteExpression(parenTerm.InnerExpression));
+                xmlBuilder.AppendLine(WriteExpression(parenTerm.InnerExpr));
                 xmlBuilder.AppendLine("<symbol> ) </symbol>");
                 break;
             case SubroutineCallTerm subroutineCall:
@@ -405,12 +407,12 @@ public static class XmlEscaper
     {
         return op switch
         {
-            Operator.PLUS => "+",
-            Operator.MINUS => "-",
-            Operator.ASTERISK => "*",
-            Operator.SLASH => "/",
-            Operator.AMPERSAND => "&amp;",
-            Operator.PIPE => "|",
+            Operator.ADD => "+",
+            Operator.SUB => "-",
+            Operator.MUL => "*",
+            Operator.DIV => "/",
+            Operator.AND => "&amp;",
+            Operator.OR => "|",
             Operator.LT => "&lt;",
             Operator.GT => "&gt;",
             Operator.EQ => "=",
@@ -422,8 +424,8 @@ public static class XmlEscaper
     {
         return op switch
         {
-            UnaryOperator.MINUS => "-",
-            UnaryOperator.TILDE => "~",
+            UnaryOperator.NEG => "-",
+            UnaryOperator.NOT => "~",
             _ => throw new ArgumentOutOfRangeException(nameof(op), $"Unexpected unary operator: {op}")
         };
     }
@@ -431,12 +433,15 @@ public static class XmlEscaper
 
 public class XmlStringBuilder
 {
-    private string _result = "";
+    private StringBuilder _sb = new StringBuilder();
     int _indentLevel = 0;
 
     public void AppendLine(string line)
     {
-        _result += new string('\t', _indentLevel) + line + "\n";
+        // _sb.AppendLine(new string('\t', _indentLevel) + line);
+
+        for (int i = 0; i < _indentLevel; i++) _sb.Append('\t');
+        _sb.AppendLine(line);
     }
 
     public void Indent()
@@ -453,7 +458,7 @@ public class XmlStringBuilder
 
     public override string ToString()
     {
-        return _result.TrimEnd();
+        return _sb.ToString().TrimEnd();
     }
 }
 

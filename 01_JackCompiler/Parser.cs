@@ -525,12 +525,12 @@ public class Parser
             Operator op;
             switch (_tz.CSymbol)
             {
-                case '+': op = Operator.PLUS; break;
-                case '-': op = Operator.MINUS; break;
-                case '*': op = Operator.ASTERISK; break;
-                case '/': op = Operator.SLASH; break;
-                case '&': op = Operator.AMPERSAND; break;
-                case '|': op = Operator.PIPE; break;
+                case '+': op = Operator.ADD; break;
+                case '-': op = Operator.SUB; break;
+                case '*': op = Operator.MUL; break;
+                case '/': op = Operator.DIV; break;
+                case '&': op = Operator.AND; break;
+                case '|': op = Operator.OR; break;
                 case '<': op = Operator.LT; break;
                 case '>': op = Operator.GT; break;
                 case '=': op = Operator.EQ; break;
@@ -618,8 +618,8 @@ public class Parser
             UnaryOperator op;
             switch (_tz.CSymbol)
             {
-                case '-': op = UnaryOperator.MINUS; break;
-                case '~': op = UnaryOperator.TILDE; break;
+                case '-': op = UnaryOperator.NEG; break;
+                case '~': op = UnaryOperator.NOT; break;
                 default: throw ReportError("Unexpected unary operator symbol in term.");
             }
             _tz.Advance();
@@ -714,9 +714,11 @@ public class Parser
     }
 
 
-    Exception ReportError(string message)
+    SyntaxException ReportError(string message)
     {
         string errorLocation = "Error at token: ";
+        
+        // エラー箇所から最大8トークン分の情報を取得してエラーメッセージに含める
         for (int i = 0; i < 8 && _tz.HasMoreTokens; i++)
         {
             // ! デバッグ用に現在トークンの生の値を取得できるようにしたほうがいい？
@@ -742,7 +744,7 @@ public class Parser
             }
             _tz.Advance();
         }
-        return new Exception($"{message} >> {errorLocation}");
+        return new SyntaxException($"{message} >> {errorLocation}");
     }
 }
 
@@ -756,12 +758,12 @@ public record Class(string ClassName, PrintableList<ClassVarDec> ClassVarDecs, P
 public record ClassVarDec(ScopeKwd Kwd, string Type, PrintableList<string> VarNames);
 public enum ScopeKwd { STATIC, FIELD }
 
-public record SubroutineDec(SubroutineKwd Kwd, string ReturnType, string SubroutineName, ParameterList Parameters, SubroutineBody Body);
+public record SubroutineDec(SubroutineKwd Kwd, string ReturnType, string SubroutineName, ParameterList Params, SubroutineBody Body);
 public enum SubroutineKwd { CONSTRUCTOR, FUNCTION, METHOD }
 
-public record ParameterList(PrintableList<(string Type, string Name)> Parameters);
+public record ParameterList(PrintableList<(string Type, string Name)> Params);
 
-public record SubroutineBody(PrintableList<VarDec> VarDecs, PrintableList<Statement> Statements);
+public record SubroutineBody(PrintableList<VarDec> VarDecs, PrintableList<Statement> Stmts);
 
 public record VarDec(string Type, PrintableList<string> VarNames);
 
@@ -770,10 +772,10 @@ public record Statement(StatementKwd Kwd, BodyStatement Body);
 public enum StatementKwd { LET, IF, WHILE, DO, RETURN }
 
 public abstract record BodyStatement { }
-public record LetStatement(string VarName, Expression? IndexExpression, Expression ValueExpression) : BodyStatement;
-public record IfStatement(Expression Condition, PrintableList<Statement> ThenStatements, PrintableList<Statement>? ElseStatements) : BodyStatement;
-public record WhileStatement(Expression Condition, PrintableList<Statement> BodyStatements) : BodyStatement;
-public record DoStatement(SubroutineCallTerm Call) : BodyStatement;
+public record LetStatement(string VarName, Expression? IndexExpr, Expression ValueExpr) : BodyStatement;
+public record IfStatement(Expression Condition, PrintableList<Statement> ThenStmts, PrintableList<Statement>? ElseStmts) : BodyStatement;
+public record WhileStatement(Expression Condition, PrintableList<Statement> BodyStmts) : BodyStatement;
+public record DoStatement(SubroutineCallTerm CallTerm) : BodyStatement;
 public record ReturnStatement(Expression? ReturnExpr) : BodyStatement;
 
 // == 式 ==
@@ -784,18 +786,18 @@ public record IntegerConstant(int Value) : Term;
 public record StringConstant(string Value) : Term;
 public record KeywordConstant(ConstKwd Value) : Term;
 public record VarNameTerm(string VarName) : Term;
-public record VarNameIndexTerm(string VarName, Expression IndexExpression) : Term;
-public record ParenthesizedTerm(Expression InnerExpression) : Term;
+public record VarNameIndexTerm(string VarName, Expression IndexExpr) : Term;
+public record ParenthesizedTerm(Expression InnerExpr) : Term;
 public record UnaryOpTerm(UnaryOperator Op, Term InnerTerm) : Term;
 
 public record SubroutineCallTerm(string? ClassOrVarName, string SubroutineName, PrintableList<Expression> Arguments) : Term;
 
-public enum Operator { PLUS, MINUS, ASTERISK, SLASH, AMPERSAND, PIPE, LT, GT, EQ }
-public enum UnaryOperator { MINUS, TILDE }
+public enum Operator { ADD, SUB, MUL, DIV, AND, OR, LT, GT, EQ }
+public enum UnaryOperator { NEG, NOT }
 public enum ConstKwd { TRUE, FALSE, NULL, THIS }
 
 // * 構造用リスト
-public class PrintableList<T>
+public class PrintableList<T> 
 {
     public List<T> Items { get; }
 
@@ -830,7 +832,8 @@ public class PrintableList<T>
     }
 }
 
-
+public class SyntaxException : Exception
+{
+    public SyntaxException(string message) : base(message) { }
+}
   
-
-

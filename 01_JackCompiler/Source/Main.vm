@@ -1,0 +1,165 @@
+// Compiled class: Main
+// Compiled subroutine declaration: function Main.main with return type void
+function Main.main 1
+// Compiled local variable declaration: Main.main local variable 'value' of type int
+// Compiled do statement: Main.main do subroutineCall;
+push constant 8001
+push constant 16
+push constant 1
+neg
+call Main.fillMemory 3
+pop temp 0
+// Compiled let statement: Main.main let value = (expression)
+push constant 8000
+call Memory.peek 1
+// Compiled let statement: Main.main assign to variable 'value'
+pop local 0
+// Compiled do statement: Main.main do subroutineCall;
+push local 0
+call Main.convert 1
+pop temp 0
+// Compiled return statement: Main.main return (expression);
+push constant 0
+return
+// Compiled subroutine declaration: function Main.convert with return type void
+// Compiled parameter: Main.convert parameter 'value' of type int
+function Main.convert 3
+// Compiled local variable declaration: Main.convert local variable 'mask' of type int
+// Compiled local variable declaration: Main.convert local variable 'position' of type int
+// Compiled local variable declaration: Main.convert local variable 'loop' of type boolean
+// Compiled let statement: Main.convert let loop = (expression)
+push constant 0
+neg
+// Compiled let statement: Main.convert assign to variable 'loop'
+pop local 2
+// Compiled while statement: Main.convert while (expression) { ... }
+label WHILE_COND_1
+push local 2
+if-goto WHILE_BODY_1
+goto WHILE_END_1
+// Compiled while body:
+label WHILE_BODY_1
+// Compiled let statement: Main.convert let position = (expression)
+push local 1
+push constant 1
+add
+// Compiled let statement: Main.convert assign to variable 'position'
+pop local 1
+// Compiled let statement: Main.convert let mask = (expression)
+push local 0
+call Main.nextMask 1
+// Compiled let statement: Main.convert assign to variable 'mask'
+pop local 0
+// Compiled if statement: Main.convert if (expression) { ... } else { ... }
+// Compiled if condition:
+push local 1
+push constant 16
+gt
+neg
+if-goto IF_TRUE_1
+goto IF_FALSE_1
+// Compiled if true branch:
+label IF_TRUE_1
+// Compiled if statement: Main.convert if (expression) { ... } else { ... }
+// Compiled if condition:
+push argument 0
+push local 0
+and
+push constant 0
+eq
+neg
+if-goto IF_TRUE_2
+goto IF_FALSE_2
+// Compiled if true branch:
+label IF_TRUE_2
+// Compiled do statement: Main.convert do subroutineCall;
+push constant 8000
+push local 1
+add
+push constant 1
+call Memory.poke 2
+pop temp 0
+// Compiled else branch:
+goto IF_END_2
+label IF_FALSE_2
+// Compiled do statement: Main.convert do subroutineCall;
+push constant 8000
+push local 1
+add
+push constant 0
+call Memory.poke 2
+pop temp 0
+label IF_END_2
+// Compiled else branch:
+goto IF_END_1
+label IF_FALSE_1
+// Compiled let statement: Main.convert let loop = (expression)
+push constant 0
+// Compiled let statement: Main.convert assign to variable 'loop'
+pop local 2
+label IF_END_1
+goto WHILE_COND_1
+label WHILE_END_1
+// Compiled return statement: Main.convert return (expression);
+push constant 0
+return
+// Compiled subroutine declaration: function Main.nextMask with return type int
+// Compiled parameter: Main.nextMask parameter 'mask' of type int
+function Main.nextMask 0
+// Compiled if statement: Main.nextMask if (expression) { ... } else { ... }
+// Compiled if condition:
+push argument 0
+push constant 0
+eq
+if-goto IF_TRUE_3
+goto IF_FALSE_3
+// Compiled if true branch:
+label IF_TRUE_3
+// Compiled return statement: Main.nextMask return (expression);
+push constant 1
+return
+// Compiled else branch:
+goto IF_END_3
+label IF_FALSE_3
+// Compiled return statement: Main.nextMask return (expression);
+push argument 0
+push constant 2
+call Math.multiply 2
+return
+label IF_END_3
+// Compiled subroutine declaration: function Main.fillMemory with return type void
+// Compiled parameter: Main.fillMemory parameter 'address' of type int
+// Compiled parameter: Main.fillMemory parameter 'length' of type int
+// Compiled parameter: Main.fillMemory parameter 'value' of type int
+function Main.fillMemory 0
+// Compiled while statement: Main.fillMemory while (expression) { ... }
+label WHILE_COND_2
+push argument 1
+push constant 0
+gt
+if-goto WHILE_BODY_2
+goto WHILE_END_2
+// Compiled while body:
+label WHILE_BODY_2
+// Compiled do statement: Main.fillMemory do subroutineCall;
+push argument 0
+push argument 2
+call Memory.poke 2
+pop temp 0
+// Compiled let statement: Main.fillMemory let length = (expression)
+push argument 1
+push constant 1
+sub
+// Compiled let statement: Main.fillMemory assign to variable 'length'
+pop argument 1
+// Compiled let statement: Main.fillMemory let address = (expression)
+push argument 0
+push constant 1
+add
+// Compiled let statement: Main.fillMemory assign to variable 'address'
+pop argument 0
+goto WHILE_COND_2
+label WHILE_END_2
+// Compiled return statement: Main.fillMemory return (expression);
+push constant 0
+return
