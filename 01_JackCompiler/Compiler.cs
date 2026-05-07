@@ -10,10 +10,10 @@ public class Compiler
     GlobalSymbolTable _symbolTable = new GlobalSymbolTable();
     StreamWriter _writer;
 
-    public Compiler(Class node, string outPath, string outFile)
+    public Compiler(Class node, string outPath)
     {
         _node = node;
-        _writer = new StreamWriter(Path.Combine(outPath, outFile));
+        _writer = new StreamWriter(outPath);
     }
 
     public void Compile()

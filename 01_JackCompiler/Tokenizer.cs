@@ -4,15 +4,9 @@ public class Tokenizer
 {
     string _loadedStr;
 
-    public Tokenizer(string input)
+    public Tokenizer(string filePath)
     {
-        _loadedStr = input;
-        HasMoreTokens = true;
-    }
-
-    public Tokenizer(string filePath, Encoding encoding)
-    {
-        _loadedStr = File.ReadAllText(filePath, encoding);
+        _loadedStr = File.ReadAllText(filePath);
         HasMoreTokens = true;
     }
 

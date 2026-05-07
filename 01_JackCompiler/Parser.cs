@@ -1,14 +1,10 @@
 public class Parser
 {
-    string _loadedStr;
-    string _outPath;
     Tokenizer _tz;
 
-    public Parser(string inPath, string outPath)
+    public Parser(string inputPath)
     {
-        _loadedStr = File.ReadAllText(inPath);
-        _outPath = outPath;
-        _tz = new Tokenizer(_loadedStr);
+        _tz = new Tokenizer(inputPath);
     }
 
     public Class Compile()

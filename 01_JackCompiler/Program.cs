@@ -1,51 +1,28 @@
-﻿// using System.Text;
-
-// class Program
-// {
-//     static void Main(string[] args)
-//     {
-//         var tokenizer = new Tokenizer(@"C:\Users\mutv6\Desktop\Creative Programming P\01_JackCompiler\Prog.jack", Encoding.UTF8);
-//         var tokenXmlWriter = new TokenXmlWriter(@"C:\Users\mutv6\Desktop\Creative Programming P\01_JackCompiler\token.xml");
-
-//         while (tokenizer.HasMoreTokens)
-//         {
-//             tokenizer.Advance();
-
-//             switch (tokenizer.CTokenType)
-//             {
-//                 case TokenType.KEYWORD:
-//                     tokenXmlWriter.WriteLine(tokenizer.CTokenType, tokenizer.CKeyword.ToString().ToLower());
-//                     break;
-//                 case TokenType.SYMBOL:
-//                     tokenXmlWriter.WriteLine(tokenizer.CTokenType, tokenizer.CSymbol.ToString());
-//                     break;
-//                 case TokenType.IDENTIFIER:
-//                     tokenXmlWriter.WriteLine(tokenizer.CTokenType, tokenizer.CIdentifier);
-//                     break;
-//                 case TokenType.INTEGER_CONSTANT:
-//                     tokenXmlWriter.WriteLine(tokenizer.CTokenType, tokenizer.CIntVal.ToString());
-//                     break;
-//                 case TokenType.STRING_CONSTANT:
-//                     tokenXmlWriter.WriteLine(tokenizer.CTokenType, tokenizer.CStringVal);
-//                     break;
-//             }
-//         }
-
-//         tokenXmlWriter.Close();
-//     }
-// }
-
-class Program
+﻿class Program
 {
     static void Main(string[] args)
     {
-        Parser parser = new Parser(@"C:\Users\mutv6\Desktop\Creative Programming P\01_JackCompiler\Source\Main.jack", @"C:\Users\mutv6\Desktop\Creative Programming P\01_JackCompiler\Source");
-        Class ast = parser.Compile();
+        string sourceDir = args.Length > 0 ? args[0] : @"C:\Users\mutv6\Desktop\Creative Programming P\01_JackCompiler\Source";
 
-        AstXmlWriter astXmlWriter = new AstXmlWriter(ast, @"C:\Users\mutv6\Desktop\Creative Programming P\01_JackCompiler\Source\Main.xml");
-        astXmlWriter.Write();
+        foreach (string file in Directory.GetFiles(sourceDir, "*.jack"))
+        {
+            Console.WriteLine($"Compiling {file}...");
 
-        Compiler compiler = new Compiler(ast, @"C:\Users\mutv6\Desktop\Creative Programming P\01_JackCompiler\Source", "Main.vm");
-        compiler.Compile();
+            Parser parser = new Parser(file);
+            Class ast = parser.Compile();
+
+            AstXmlWriter astXmlWriter = new AstXmlWriter(ast, Path.Combine(sourceDir, $"{Path.GetFileNameWithoutExtension(file)}.xml"));
+            astXmlWriter.Write();
+
+            Compiler compiler = new Compiler(ast, Path.Combine(sourceDir, $"{Path.GetFileNameWithoutExtension(file)}.vm"));
+            compiler.Compile();
+        }
+
+        VmTranslator vmTranslator = new VmTranslator(sourceDir);
+        vmTranslator.TranslateAll();
+
+        Assembler assembler = new Assembler(sourceDir);
+        assembler.AssembleAll();
+            
     }
 }
