@@ -13,43 +13,45 @@ class VmTranslator
         string[] vmFiles = Directory.GetFiles(_inputDirPath, "*.vm");
 
 
-        // * 2. 各ファイルを _ClassName.asm として出力
+        // * 2. 各ファイルを ClassName.asm として出力
         foreach (string vmFile in vmFiles)
         {
-            var translator = new VmWriter(vmFile, $"{_inputDirPath}/_{Path.GetFileNameWithoutExtension(vmFile)}.asm");
+            var translator = new VmWriter(vmFile, $"{_inputDirPath}/{Path.GetFileNameWithoutExtension(vmFile)}.asm");
             translator.TranslateAndWrite();
         }
 
 
-        // * 3. 出力ファイルを結合して最終出力ファイル Main.asm を作成
-        using (var finalWriter = new StreamWriter($"{_inputDirPath}/Main.asm"))
+        string outFilePath = $"{_inputDirPath}/_Out.asm";
+
+        // * 3. 出力ファイルを結合して最終出力ファイル _Out.asm を作成
+        using (var outWriter = new StreamWriter(outFilePath))
         {
-            // 3.1 _sys.asm と ブートストラップを最初に結合
-            string sysOutFilePath = $"{_inputDirPath}/_Sys.asm";
+            // 3.1 _Sys.asm と ブートストラップを最初に結合
+            string sysFilePath = $"{_inputDirPath}/_Sys.asm";
 
-            if (File.Exists(sysOutFilePath))
+            if (File.Exists(sysFilePath))
             {
-                var sysReader = new StreamReader(sysOutFilePath);
-                finalWriter.Write(AsmStrService.Bootstrap(256, false));
+                var sysReader = new StreamReader(sysFilePath);
+                outWriter.Write(AsmStrService.Bootstrap(256, false));
 
-                finalWriter.Write(sysReader.ReadToEnd());
+                outWriter.Write(sysReader.ReadToEnd());
             }
             else
             {
                 Console.WriteLine("[!!] _Sys.asm not found. Bootstrap code will not be included.");
             }
 
-            // 3.2 _Main.asm を結合
-            string mainFilePath = $"{_inputDirPath}/_Main.asm";
+            // 3.2 Main.asm を結合
+            string mainFilePath = $"{_inputDirPath}/Main.asm";
             
             if (File.Exists(mainFilePath))
             {
                 var mainReader = new StreamReader(mainFilePath);
-                finalWriter.Write(mainReader.ReadToEnd());
+                outWriter.Write(mainReader.ReadToEnd());
             }
             else
             {
-                Console.WriteLine("[!!] _Main.asm not found.");
+                Console.WriteLine("[!!] Main.asm not found.");
             }
 
             // 3.3 _Main.asm以外の各ファイルを結合
@@ -58,13 +60,13 @@ class VmTranslator
                 string asmFilePath = $"{_inputDirPath}/{Path.GetFileNameWithoutExtension(vmFile)}.asm";
 
                 // _Sys.asm ,_Main.asm, 真のMain.asm はスキップ
-                if (asmFilePath == sysOutFilePath || asmFilePath == mainFilePath || asmFilePath == $"{_inputDirPath}/Main.asm")
+                if (asmFilePath == sysFilePath || asmFilePath == mainFilePath || asmFilePath == outFilePath)
                 {
                     continue;
                 }
 
                 var asmReader = new StreamReader(asmFilePath);
-                finalWriter.Write(asmReader.ReadToEnd());
+                outWriter.Write(asmReader.ReadToEnd());
             }
         }
     }
