@@ -6,9 +6,9 @@
         @0
         D=A
     
-    (_f_INIT_LOOP$_Sys.Sys.init)
+    (_f_INIT_LOOP$Sys.init)
         // end loop if D <= 0
-            @_f_INIT_END$_Sys.Sys.init
+            @_f_INIT_END$Sys.init
             D;JLE
 
         // M[SP] = 0
@@ -25,14 +25,14 @@
             D=D-1
 
         // back to begin
-            @_f_INIT_LOOP$_Sys.Sys.init
+            @_f_INIT_LOOP$Sys.init
             0;JMP
 
-    (_f_INIT_END$_Sys.Sys.init)
+    (_f_INIT_END$Sys.init)
         
 //// # call Main.main 0
     // push @RET_ADDR of this call
-        @_RET_ADDR$Main.main_9
+        @_RET_ADDR$Main.main_1
         D=A
 
         @SP
@@ -117,12 +117,12 @@
         0;JMP
 
     // function returns here = @RET_ADDR
-    (_RET_ADDR$Main.main_9)
+    (_RET_ADDR$Main.main_1)
         
-//// label END
-    (_L$END)
+//// label _HALT
+    (_L$_HALT)
         
-//// goto END
-    @_L$END
+//// goto _HALT
+    @_L$_HALT
         0;JMP
         

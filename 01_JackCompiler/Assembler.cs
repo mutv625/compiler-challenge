@@ -9,23 +9,36 @@ public class Assembler
 
     public void AssembleAll()
     {
-        string[] asmFiles = Directory.GetFiles(_inputDirPath, "Main.asm");
+        string[] mainFiles = Directory.GetFiles(_inputDirPath, "_Out.asm");
 
-        if (asmFiles.Length == 0)
+        if (mainFiles.Length != 0)
         {
-            Console.WriteLine("[!!] Main.asm not found. No files to assemble.");
+            Console.WriteLine("Found _Out.asm. Assembling only _Out.asm...");
+            AssembleAndWrite(Path.Combine(_inputDirPath, "_Out"));
             return;
         }
-
-        foreach (string asmFile in asmFiles)
+        else
         {
-            AssembleAndWrite(Path.Combine(_inputDirPath, Path.GetFileNameWithoutExtension(asmFile)));
+            Console.WriteLine("No _Out.asm found. Assembling all .asm files...");
+
+            string[] asmFiles = Directory.GetFiles(_inputDirPath, "*.asm");
+
+            if (asmFiles.Length == 0)
+            {
+                Console.WriteLine("[!!] No .asm files found. No files to assemble.");
+                return;
+            }
+
+            foreach (string asmFile in asmFiles)
+            {
+                AssembleAndWrite(Path.Combine(_inputDirPath, Path.GetFileNameWithoutExtension(asmFile)));
+            }
         }
     }
 
-    private void AssembleAndWrite(string filePath)
+    private void AssembleAndWrite(string outFilePath)
     {
-        StreamReader reader = new StreamReader(filePath + ".asm");
+        StreamReader reader = new StreamReader(outFilePath + ".asm");
         List<string> lines = new();
 
         List<ParsedLine> parsedLines = new();
@@ -42,13 +55,6 @@ public class Assembler
                     parsedLines.Add(parsedLine);
                 }
             }
-        }
-
-        // * DEBUG
-        Console.WriteLine("=== All Lines ===");
-        foreach (var line in parsedLines)
-        {
-            Console.WriteLine(line);
         }
 
         // * 2nd Pass: カウンターとシンボルテーブルの構築
@@ -117,8 +123,8 @@ public class Assembler
         }
 
         // * ファイル出力
-        using StreamWriter writer = new StreamWriter(filePath + ".hack");
-        using BinaryWriter binWriter = new BinaryWriter(new FileStream(filePath + ".hackbin", FileMode.Create));
+        using StreamWriter writer = new StreamWriter(outFilePath + ".hack");
+        using BinaryWriter binWriter = new BinaryWriter(new FileStream(outFilePath + ".hackbin", FileMode.Create));
 
         for (int i = 0; i < OpCodes.Count; i++)
         {

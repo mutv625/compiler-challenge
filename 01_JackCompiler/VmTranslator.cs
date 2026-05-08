@@ -26,8 +26,8 @@ class VmTranslator
         // * 3. 出力ファイルを結合して最終出力ファイル _Out.asm を作成
         using (var outWriter = new StreamWriter(outFilePath))
         {
-            // 3.1 _Sys.asm と ブートストラップを最初に結合
-            string sysFilePath = $"{_inputDirPath}/_Sys.asm";
+            // 3.1 Sys.asm と ブートストラップを最初に結合
+            string sysFilePath = $"{_inputDirPath}/Sys.asm";
 
             if (File.Exists(sysFilePath))
             {
@@ -38,7 +38,7 @@ class VmTranslator
             }
             else
             {
-                Console.WriteLine("[!!] _Sys.asm not found. Bootstrap code will not be included.");
+                Console.WriteLine("[!!] Sys.asm not found. Bootstrap code will not be included.");
             }
 
             // 3.2 Main.asm を結合
@@ -54,7 +54,7 @@ class VmTranslator
                 Console.WriteLine("[!!] Main.asm not found.");
             }
 
-            // 3.3 _Main.asm以外の各ファイルを結合
+            // 3.3 Main.asm以外の各ファイルを結合
             foreach (string vmFile in vmFiles)
             {
                 string asmFilePath = $"{_inputDirPath}/{Path.GetFileNameWithoutExtension(vmFile)}.asm";
@@ -1092,9 +1092,9 @@ class AsmStrService
         @{nVars}
         D=A
     
-    (_f_INIT_LOOP${fileName}.{func})
+    (_f_INIT_LOOP${func})
         // end loop if D <= 0
-            @_f_INIT_END${fileName}.{func}
+            @_f_INIT_END${func}
             D;JLE
 
         // M[SP] = 0
@@ -1111,10 +1111,10 @@ class AsmStrService
             D=D-1
 
         // back to begin
-            @_f_INIT_LOOP${fileName}.{func}
+            @_f_INIT_LOOP${func}
             0;JMP
 
-    (_f_INIT_END${fileName}.{func})
+    (_f_INIT_END${func})
         ";
     }
 

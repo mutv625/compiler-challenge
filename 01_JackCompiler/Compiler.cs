@@ -53,7 +53,7 @@ public class Compiler
         for (int i = 0; i < node.VarNames.Count; i++)
         {
             sb.AppendLine($"// Compiled class variable declaration: {node.Kwd.ToString().ToLower()} {className}.{node.VarNames[i]} of type {node.Type}");
-            _symbolTable.Define(Scope.CLASS, node.VarNames[i], node.Type, node.Kwd == ScopeKwd.STATIC ? Segment.STATIC : Segment.FIELD);
+            _symbolTable.Define(Scope.CLASS, node.VarNames[i], node.Type, node.Kwd == ScopeKwd.STATIC ? Segment.STATIC : Segment.THIS);
         }
 
         return sb.ToString().TrimEnd();
@@ -197,7 +197,7 @@ public class Compiler
             if (!found) throw new SemanticException($"Undefined variable: {node.VarName}");
 
             // 1. 代入先の決定
-            if (segment == Segment.FIELD)
+            if (segment == Segment.THIS)
             {
                 sb.AppendLine($"pop this {index}");
             }
@@ -421,6 +421,10 @@ public class Compiler
             // サブルーチン名のみの場合は、同クラスのサブルーチンとみなす
             callClassName = className;
             callSubroutineName = callTerm.SubroutineName;
+
+            // メソッド呼び出しになるので、オブジェクト自身を引数に追加
+            sb.AppendLine("push pointer 0");
+            argCount++;
         }
         else
         {
@@ -474,7 +478,7 @@ public class GlobalSymbolTable
     public enum Segment
     {
         STATIC,
-        FIELD,
+        THIS,
         ARGUMENT,
         LOCAL
     }

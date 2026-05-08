@@ -1,6 +1,0 @@
-function Sys.init 0
-	// Mainクラスのmain関数をエントリーポイントとする (0 引数)
-	call Main.main 0
-// halt	
-label END
-	goto END

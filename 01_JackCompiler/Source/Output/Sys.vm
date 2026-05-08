@@ -1,0 +1,7 @@
+function Sys.init 0
+	// Main class - main function (0 args) will be entry point
+	call Main.main 0
+
+// halt	- End of Program
+label _HALT
+goto _HALT

@@ -4,24 +4,40 @@
     {
         string sourceDir = args.Length > 0 ? args[0] : @"C:\Users\mutv6\Desktop\Creative Programming P\01_JackCompiler\Source";
 
-        foreach (string file in Directory.GetFiles(sourceDir, "*.jack"))
+        string outputDir = Path.Combine(sourceDir, "Output");
+        if (Directory.Exists(outputDir))
         {
-            Console.WriteLine($"Compiling {file}...");
+            Directory.Delete(outputDir, true);
+            Directory.CreateDirectory(outputDir);
+        }
+        else
+        {
+            Directory.CreateDirectory(outputDir);
+        }
 
+        foreach (string file in Directory.GetFiles(sourceDir))
+        {
+            string destFile = Path.Combine(outputDir, Path.GetFileName(file));
+            File.Copy(file, destFile, true);
+        }
+
+        // 
+        foreach (string file in Directory.GetFiles(outputDir, "*.jack"))
+        {
             Parser parser = new Parser(file);
             Class ast = parser.Compile();
 
-            AstXmlWriter astXmlWriter = new AstXmlWriter(ast, Path.Combine(sourceDir, $"{Path.GetFileNameWithoutExtension(file)}.xml"));
+            AstXmlWriter astXmlWriter = new AstXmlWriter(ast, Path.Combine(outputDir, $"{Path.GetFileNameWithoutExtension(file)}.xml"));
             astXmlWriter.Write();
 
-            Compiler compiler = new Compiler(ast, Path.Combine(sourceDir, $"{Path.GetFileNameWithoutExtension(file)}.vm"));
+            Compiler compiler = new Compiler(ast, Path.Combine(outputDir, $"{Path.GetFileNameWithoutExtension(file)}.vm"));
             compiler.Compile();
         }
 
-        VmTranslator vmTranslator = new VmTranslator(sourceDir);
+        VmTranslator vmTranslator = new VmTranslator(outputDir);
         vmTranslator.TranslateAll();
 
-        Assembler assembler = new Assembler(sourceDir);
+        Assembler assembler = new Assembler(outputDir);
         assembler.AssembleAll();
             
     }
