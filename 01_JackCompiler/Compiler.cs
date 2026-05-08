@@ -68,6 +68,12 @@ public class Compiler
         // サブルーチンスコープ開始
         _symbolTable.Reset(Scope.SUBROUTINE);
 
+        if (node.Kwd == SubroutineKwd.METHOD)
+        {
+            // !.1 method の argument 0 は暗黙の this
+            _symbolTable.Define(Scope.SUBROUTINE, "this", className, Segment.ARGUMENT);
+        }
+
         // パラメータをシンボルテーブルに登録
         foreach (var param in node.Params.Params)
         {
@@ -436,7 +442,7 @@ public class Compiler
                 callClassName = type;
                 callSubroutineName = callTerm.SubroutineName;
 
-                // メソッド呼び出しになるので、オブジェクト自身を引数に追加
+                // !.1 method の argument 0 である暗黙の this を追加
                 sb.AppendLine($"push {segment.ToString().ToLower()} {index}");
                 argCount++;
             }
