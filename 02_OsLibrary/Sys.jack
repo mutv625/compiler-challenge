@@ -1,0 +1,26 @@
+class Sys {
+    function void init() {
+        Math.init();
+        
+
+        Main.main();
+
+        Sys.halt();
+        return 1;
+    }
+
+    function void halt() {
+        while (true) {
+        }
+        return 1;
+    }
+
+    function void wait(int ms) {
+        var int i;
+        while (i < 10000 * ms) {
+        }
+
+        return 0;
+    }
+
+}
