@@ -100,6 +100,11 @@ public class Tokenizer
                     return;
                 }
             }
+            // EOF 処理
+            CTokenType = TokenType.INTEGER_CONSTANT;
+            CIntVal = int.Parse(_loadedStr.Substring(pos, _loadedStr.Length - pos));
+            pos = _loadedStr.Length;
+            return;
         }
 
         // # シンボル
@@ -126,10 +131,12 @@ public class Tokenizer
                     return;
                 }
             }
+            // EOF 処理
+            throw new TokenizeException("Unterminated string constant.");
         }
 
-        //# 識別子 or キーワード
-        if (Char.IsLetter(_loadedStr[pos]))
+        //# 識別子 or キーワード (_ を許可)
+        if (Char.IsLetter(_loadedStr[pos]) || _loadedStr[pos] == '_')
         {
             for (int i = pos; i < _loadedStr.Length; i++)
             {
@@ -152,7 +159,24 @@ public class Tokenizer
                     return;
                 }
             }
+            // reached EOF while reading identifier
+            string wordAtEof = _loadedStr.Substring(pos, _loadedStr.Length - pos);
+            if (Enum.TryParse(wordAtEof.ToUpper(), out Keyword kwEof))
+            {
+                CTokenType = TokenType.KEYWORD;
+                CKeyword = kwEof;
+            }
+            else
+            {
+                CTokenType = TokenType.IDENTIFIER;
+                CIdentifier = wordAtEof;
+            }
+            pos = _loadedStr.Length;
+            return;
         }
+
+        // # ここまで来たら不正なトークン
+        throw new TokenizeException($"Invalid character at position {pos}");
     }
 }
 
