@@ -1,5 +1,5 @@
 using System.Text;
-using static GlobalSymbolTable;
+using static ClassSymbolTable;
 
 /// <summary>
 /// 単一クラスをVMコードに変換する
@@ -7,13 +7,16 @@ using static GlobalSymbolTable;
 public class Compiler
 {
     Class _node;
-    GlobalSymbolTable _symbolTable = new GlobalSymbolTable();
+    ClassSymbolTable _symbolTable = new ClassSymbolTable();
     StreamWriter _writer;
+
+    string _uniqueLabelPrefix;  
 
     public Compiler(Class node, string outPath)
     {
         _node = node;
         _writer = new StreamWriter(outPath);
+        _uniqueLabelPrefix = Path.GetFileNameWithoutExtension(outPath);
     }
 
     public void Compile()
@@ -216,7 +219,7 @@ public class Compiler
         return sb.ToString().TrimEnd();
     }
 
-    int globalIfCount = 0;
+    static int globalIfCount = 0;
     public string CompileIf(string className, string subroutineName, IfStatement node)
     {
         StringBuilder sb = new StringBuilder();
@@ -228,30 +231,30 @@ public class Compiler
 
         sb.AppendLine($"// Compiled if condition:");
         sb.AppendLine(CompileExpression(className, subroutineName, node.Condition));
-        sb.AppendLine($"if-goto IF_TRUE_{ifCount}");
-        sb.AppendLine($"goto IF_FALSE_{ifCount}");
+        sb.AppendLine($"if-goto IF_TRUE_{_uniqueLabelPrefix}.{ifCount}");
+        sb.AppendLine($"goto IF_FALSE_{_uniqueLabelPrefix}.{ifCount}");
 
         sb.AppendLine($"// Compiled if true branch:");
-        sb.AppendLine($"label IF_TRUE_{ifCount}");
+        sb.AppendLine($"label IF_TRUE_{_uniqueLabelPrefix}.{ifCount}");
         sb.AppendLine(CompileStatements(className, subroutineName, node.ThenStmts));
 
         if (node.ElseStmts is not null && node.ElseStmts.Count > 0)
         {
             sb.AppendLine($"// Compiled else branch:");
-            sb.AppendLine($"goto IF_END_{ifCount}");
-            sb.AppendLine($"label IF_FALSE_{ifCount}");
+            sb.AppendLine($"goto IF_END_{_uniqueLabelPrefix}.{ifCount}");
+            sb.AppendLine($"label IF_FALSE_{_uniqueLabelPrefix}.{ifCount}");
             sb.AppendLine(CompileStatements(className, subroutineName, node.ElseStmts));
-            sb.AppendLine($"label IF_END_{ifCount}");
+            sb.AppendLine($"label IF_END_{_uniqueLabelPrefix}.{ifCount}");
         }
         else
         {
-            sb.AppendLine($"label IF_FALSE_{ifCount}");
+            sb.AppendLine($"label IF_FALSE_{_uniqueLabelPrefix}.{ifCount}");
         }
 
         return sb.ToString().TrimEnd();
     }
 
-    int globalWhileCount = 0;
+    static int globalWhileCount = 0;
     public string CompileWhile(string className, string subroutineName, WhileStatement node)
     {
         StringBuilder sb = new StringBuilder();
@@ -260,16 +263,16 @@ public class Compiler
         int whileCount = globalWhileCount;  // ネストしたwhile文でもラベルが衝突しないように、グローバルカウンタから番号をもらう
 
         sb.AppendLine($"// Compiled while statement: {className}.{subroutineName} while (expression) {{ ... }}");
-        sb.AppendLine($"label WHILE_COND_{whileCount}");
+        sb.AppendLine($"label WHILE_COND_{_uniqueLabelPrefix}.{whileCount}");
         sb.AppendLine(CompileExpression(className, subroutineName, node.Condition));
-        sb.AppendLine($"if-goto WHILE_BODY_{whileCount}");
-        sb.AppendLine($"goto WHILE_END_{whileCount}");
+        sb.AppendLine($"if-goto WHILE_BODY_{_uniqueLabelPrefix}.{whileCount}");
+        sb.AppendLine($"goto WHILE_END_{_uniqueLabelPrefix}.{whileCount}");
 
         sb.AppendLine($"// Compiled while body:");
-        sb.AppendLine($"label WHILE_BODY_{whileCount}");
+        sb.AppendLine($"label WHILE_BODY_{_uniqueLabelPrefix}.{whileCount}");
         sb.AppendLine(CompileStatements(className, subroutineName, node.BodyStmts));
-        sb.AppendLine($"goto WHILE_COND_{whileCount}");
-        sb.AppendLine($"label WHILE_END_{whileCount}");
+        sb.AppendLine($"goto WHILE_COND_{_uniqueLabelPrefix}.{whileCount}");
+        sb.AppendLine($"label WHILE_END_{_uniqueLabelPrefix}.{whileCount}");
 
         return sb.ToString().TrimEnd();
     }
@@ -470,7 +473,7 @@ public class Compiler
 /// 識別子のスコープを管理するクラス
 /// static + fieldはクラススコープ、arg + varはサブルーチンスコープ
 /// </summary>
-public class GlobalSymbolTable
+public class ClassSymbolTable
 {
     Dictionary<string, (string type, Segment segment, int index)> _localTable = new();
     Dictionary<string, (string type, Segment segment, int index)> _classTable = new();

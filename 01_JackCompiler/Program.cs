@@ -2,6 +2,8 @@
 
 class Program
 {
+    static List<string> libraryIgnore = ["Output.jack"];
+
     static void Main(string[] args)
     {
         var envInBase = Path.Combine(AppContext.BaseDirectory, ".env");
@@ -30,6 +32,15 @@ class Program
         string libDir = Path.Combine(sourceDir, "Library");
         foreach (string file in Directory.GetFiles(libDir, "*.jack"))
         {
+            if (libraryIgnore.Contains(Path.GetFileName(file)))
+            {
+                if (File.Exists(Path.Combine(outputDir, Path.GetFileName(file))))
+                {
+                    File.Delete(Path.Combine(outputDir, Path.GetFileName(file)));
+                }
+                continue;
+            }
+
             string destFile = Path.Combine(outputDir, Path.GetFileName(file));
             File.Copy(file, destFile, true);
         }
