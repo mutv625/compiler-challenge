@@ -143,4 +143,13 @@ class Screen{
 		return;
 	}
 
+	function void clearScreen(){
+		var int i;
+		let i = 0;
+		while(i < 8192){
+			do Memory.poke(SCREEN + i, 0);
+			let i = i + 1;
+		}
+		return;
+	}
 }
