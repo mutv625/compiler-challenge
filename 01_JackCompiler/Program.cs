@@ -92,7 +92,19 @@ class Program
         {
             foreach (string file in Directory.GetFiles(outputDir, "*.vm"))
             {
-                if (Path.GetFileName(file) == "_Out.vm") continue;
+                if (Path.GetFileName(file) == "Sys.vm")
+                {
+                    using (StreamReader sr = new StreamReader(file))
+                    {
+                        sw.Write(sr.ReadToEnd());
+                    }
+                    break;
+                }
+            }
+
+            foreach (string file in Directory.GetFiles(outputDir, "*.vm"))
+            {
+                if (Path.GetFileName(file) == "_Out.vm" || Path.GetFileName(file) == "Sys.vm") continue;
                 
                 using (StreamReader sr = new StreamReader(file))
                 {
